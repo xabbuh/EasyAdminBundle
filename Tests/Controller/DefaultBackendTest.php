@@ -633,10 +633,6 @@ class DefaultBackendTest extends AbstractTestCase
 
     public function testEntityDeletion()
     {
-        if (PHP_VERSION_ID < 50400) {
-            $this->markTestSkipped('This test keeps failing on Travis CI when running PHP 5.3 for no apparent reason.');
-        }
-
         /* @var EntityManager */
         $em = $this->client->getContainer()->get('doctrine')->getManager();
         $product = $em->getRepository('AppTestBundle\Entity\FunctionalTests\Product')->find(1);
