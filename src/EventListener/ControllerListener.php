@@ -15,6 +15,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Configuration\ConfigManager;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Sets the right controller to be executed when entities define custom
@@ -71,7 +72,7 @@ class ControllerListener
         $controllerMethod = $currentController[1];
 
         // build the full controller name depending on its type
-        if (class_exists($customController)) {
+        if (class_exists($customController) || Kernel::VERSION_ID >= 40100) {
             // 'class::method' syntax for normal controllers
             $customController .= '::'.$controllerMethod;
         } else {
