@@ -51,6 +51,8 @@ matrix:
       env:
         - SYMFONY_VERSION="2.3.*"
         - COMPOSER_FLAGS="--prefer-lowest"
+    # latest Symfony version
+    - php: 7.2
   allow_failures:
     - php: nightly
     - php: 5.3
