@@ -11,6 +11,7 @@
 
 namespace EasyCorp\Bundle\EasyAdminBundle;
 
+use EasyCorp\Bundle\EasyAdminBundle\DependencyInjection\Compiler\AnnotatedRouteControllerLoaderPass;
 use EasyCorp\Bundle\EasyAdminBundle\DependencyInjection\Compiler\EasyAdminConfigPass;
 use EasyCorp\Bundle\EasyAdminBundle\DependencyInjection\Compiler\EasyAdminFormTypePass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -28,6 +29,7 @@ class EasyAdminBundle extends Bundle
     {
         $container->addCompilerPass(new EasyAdminFormTypePass(), PassConfig::TYPE_BEFORE_REMOVING);
         $container->addCompilerPass(new EasyAdminConfigPass());
+        $container->addCompilerPass(new AnnotatedRouteControllerLoaderPass());
     }
 }
 
