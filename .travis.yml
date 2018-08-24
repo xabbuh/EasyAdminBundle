@@ -19,6 +19,9 @@ env:
 matrix:
   fast_finish: true
   include:
+    - php: 7.1
+      env:
+        - ENABLE_CODE_COVERAGE="true"
     # bleeding edge (unreleased dev versions where failures are allowed)
     - php: nightly
       env:
@@ -37,7 +40,6 @@ matrix:
     - php: 5.6
       env:
         - SYMFONY_VERSION="2.8.*"
-        - ENABLE_CODE_COVERAGE="true"
     # Symfony 3 LTS
     - php: 7.1
       env:
