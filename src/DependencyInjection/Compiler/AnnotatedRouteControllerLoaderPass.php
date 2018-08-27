@@ -22,12 +22,7 @@ class AnnotatedRouteControllerLoaderPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (class_exists('Symfony\Bundle\FrameworkBundle\Routing\AnnotatedRouteControllerLoader')) {
-            // FrameworkBundle 3.4+ ships it own AnnotationClassLoader implementation
-            return;
-        }
-
-        if (!$container->has('routing.resolver')) {
+        if (!$container->has('routing.resolver') || $container->has('sensio_framework_extra.routing.loader.annot_class')) {
             return;
         }
 
@@ -51,19 +46,5 @@ class AnnotatedRouteControllerLoaderPass implements CompilerPassInterface
                 new Reference('file_locator'),
                 new Reference('easyadmin.routing.loader.annotation'),
             ));
-
-        $resolverDefinition = $container->getDefinition('routing.resolver');
-        $methodCalls = array_filter($resolverDefinition->getMethodCalls(), function ($methodCall) {
-            return isset($methodCall[0]) && 'addLoader' === $methodCall[0];
-        });
-
-        if (!empty($methodCalls)) {
-            // The RoutingResolverPass from the Routing component has already been processed. Thus, the routing.loader
-            // tag used above will not have any effect anymore. Thus, we need to make sure to register our created
-            // route loader definitions ourselves.
-            $resolverDefinition->addMethodCall('addLoader', array(new Reference('easyadmin.routing.loader.annotation')));
-            $resolverDefinition->addMethodCall('addLoader', array(new Reference('easyadmin.routing.loader.directory')));
-            $resolverDefinition->addMethodCall('addLoader', array(new Reference('easyadmin.routing.loader.file')));
-        }
     }
 }
