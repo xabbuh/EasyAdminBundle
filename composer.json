@@ -51,6 +51,9 @@
         "symfony/var-dumper": "~2.3|~3.0|^4.0",
         "symfony/yaml": "~2.3|~3.0|^4.0"
     },
+    "conflict": {
+        "symfony/dependency-injection": ">= 3.2 <3.4"
+    },
     "config": {
         "sort-packages": true
     },

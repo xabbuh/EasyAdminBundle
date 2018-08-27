@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\DependencyInjection\Compiler\EasyAdminConfig
 use EasyCorp\Bundle\EasyAdminBundle\DependencyInjection\Compiler\EasyAdminFormTypePass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -29,7 +30,13 @@ class EasyAdminBundle extends Bundle
     {
         $container->addCompilerPass(new EasyAdminFormTypePass(), PassConfig::TYPE_BEFORE_REMOVING);
         $container->addCompilerPass(new EasyAdminConfigPass());
-        $container->addCompilerPass(new AnnotatedRouteControllerLoaderPass());
+        if (!class_exists(ServiceLocator::class)) { // DI < 3.3, so FrameworkBundle < 3.4 due to our conflict rules and its
+            $passConfig = $container->getCompilerPassConfig();
+            $passes = $passConfig->getBeforeOptimizationPasses();
+            array_unshift($passes, new AnnotatedRouteControllerLoaderPass()); // Make sure our pass is executed before the one registering routing loaders
+
+            $container->setBeforeOptimizationPasses($passes);
+        }
     }
 }
 
