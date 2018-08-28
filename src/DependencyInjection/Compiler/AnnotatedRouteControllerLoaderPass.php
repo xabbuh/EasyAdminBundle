@@ -22,6 +22,11 @@ class AnnotatedRouteControllerLoaderPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
+        if (class_exists('Symfony\Bundle\FrameworkBundle\Routing\AnnotatedRouteControllerLoader')) {
+            // FrameworkBundle 3.4+ ships it own AnnotationClassLoader implementation
+            return;
+        }
+
         if (!$container->has('routing.resolver') || $container->has('sensio_framework_extra.routing.loader.annot_class')) {
             return;
         }
