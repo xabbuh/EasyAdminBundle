@@ -39,11 +39,9 @@ matrix:
       env:
         - SYMFONY_VERSION="2.8.*"
     # legacy (oldest supported versions)
-    - php: 5.3
-      dist: precise
+    - php: 5.6
       env:
-        - SYMFONY_VERSION="2.3.*"
-        - COMPOSER_FLAGS="--prefer-lowest"
+        - COMPOSER_FLAGS="--prefer-lowest --prefer-stable"
   allow_failures:
     - php: nightly
     - php: 5.3
